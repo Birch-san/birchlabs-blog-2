@@ -1,0 +1,1 @@
+https://stackoverflow.com/questions/6306362/htaccess-redirect-if-file-exists
