@@ -14,6 +14,9 @@ RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/re
 && apk add php7-xdebug@testing \
 && rm -rf /var/cache/apk/* \
 
+&& sed -i 's/^#\(LoadModule rewrite_module.*\)/\1/g' /etc/apache2/httpd.conf \
+&& sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/httpd.conf \
+
 # Create symlinks PHP -> PHP7
 && ln -sf /usr/bin/php7 /usr/bin/php \
 
