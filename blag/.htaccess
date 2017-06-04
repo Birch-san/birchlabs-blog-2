@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{REQUEST_URI}::%{SCRIPT_FILENAME} ^(.*?)::(.*)\1$
+RewriteCond %2/legacy%1 -f [OR]
+RewriteCond %2/legacy%1 -d
+RewriteRule .* /legacy%1 [L,R=301]
