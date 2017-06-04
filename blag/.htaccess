@@ -18,6 +18,9 @@ RewriteRule .* /legacy%{REQUEST_URI} [R=302,L]
 # See my StackOverflow question:
 # https://stackoverflow.com/q/44353754/5257399
 
+# Useful way to test redirects:
+# curl -sI 'http://localhost:8082/habbo.php?h=1' | grep Location | sed 's/^Location: //'
+
 # Ideas that I tried along the way (retained for educational reasons):
 
 # RewriteCond %{SCRIPT_FILENAME} !-f
