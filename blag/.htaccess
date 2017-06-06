@@ -1,3 +1,7 @@
+<Location /index.htmll>
+  Header add Link "</assets/styles.css>;rel=preload"
+</Location>
+
 RewriteEngine on
 
 # Use this in production to rewrite / to /legacy
