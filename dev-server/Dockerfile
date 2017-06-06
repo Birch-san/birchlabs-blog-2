@@ -18,12 +18,10 @@ RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/re
 && sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/httpd.conf \
 
 # Create symlinks PHP -> PHP7
-&& ln -sf /usr/bin/php7 /usr/bin/php \
-
-&& ln -sf /dev/stdout /var/log/apache2/access.log \
-&& ln -sf /dev/stderr /var/log/apache2/error.log
+&& ln -sf /usr/bin/php7 /usr/bin/php
 
 COPY xdebug.ini /etc/php7/conf.d/xdebug.ini
 COPY apache-run.sh /etc/sv/apache2/run
+COPY post-config-webdir.sh /etc/run_always/53-post-config-webdir
 
 EXPOSE 80
