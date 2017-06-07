@@ -1,8 +1,11 @@
-<Location /index.htmll>
-  Header add Link "</assets/styles.css>;rel=preload"
-</Location>
+# <Location /index.htmll>
+#   Header add Link "</assets/styles.css>;rel=preload"
+# </Location>
 
 RewriteEngine on
+
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule .* /legacy/habbo.php [R=302,L]
 
 # Use this in production to rewrite / to /legacy
 RewriteCond %{REQUEST_FILENAME} !-f

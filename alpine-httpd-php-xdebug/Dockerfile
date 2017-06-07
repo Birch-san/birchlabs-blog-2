@@ -11,10 +11,10 @@ RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/re
 # Create symlinks PHP -> PHP7
 && ln -sf /usr/bin/php7 /usr/bin/php \
 
-&& sed -i 's/^#\(LoadModule rewrite_module.*\)/\1/g' /etc/apache2/httpd.conf \
-&& sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/httpd.conf
+&& sed -i 's/^#ServerName.*/ServerName localhost/' /usr/local/apache2/conf/httpd.conf \
+&& sed -i 's/^#\(LoadModule rewrite_module.*\)/\1/g' /usr/local/apache2/conf/httpd.conf \
+&& sed -i 's/AllowOverride [Nn]one/AllowOverride All/' /usr/local/apache2/conf/httpd.conf
 
 COPY xdebug.ini /etc/php7/conf.d/xdebug.ini
-COPY apache-run.sh /etc/sv/apache2/run
 
 EXPOSE 80
