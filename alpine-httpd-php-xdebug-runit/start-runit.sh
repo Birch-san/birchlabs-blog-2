@@ -1,0 +1,34 @@
+#! /bin/sh
+
+# @author faisyl@GitHub
+# @see https://github.com/faisyl/alpine-runit/blob/master/start_runit
+
+#env  | sed -e 's/=/="/' | sed -e 's/$/"/' > /etc/envvars
+for K in $(env | cut -d= -f1)
+do
+    VAL=$(eval echo \$$K)
+    echo "${K}=\"${VAL}\"" >> /etc/envvars
+done
+
+echo "Starting pre-service scripts in /etc/runit_init.d"
+for script in /etc/runit_init.d/*
+do
+    if [ -x "$script" ]; then
+        echo >&2 "*** Running: $script"
+        $script
+        retval=$?
+        if [ $retval != 0 ];
+        then
+            echo >&2 "*** Failed with return value: $?"
+            exit $retval
+        fi
+    fi
+done
+if [ $# -eq 0 ]; then
+    exec /sbin/runsvdir -P /etc/service
+fi
+/sbin/runsvdir -P /etc/service &
+
+[ "$1" == '--' ] && shift
+exec $@
+
