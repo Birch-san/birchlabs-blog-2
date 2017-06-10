@@ -1,20 +1,11 @@
 #!/bin/sh
-
-# forked from Kjell Havnesköld's nimmis/alpine-apache-php7:
-# https://github.com/nimmis/docker-alpine-apache/blob/master/root/etc/sv/apache2/run
-
+# forked from Apache httpd's Alpine Dockerfile
+# https://github.com/docker-library/httpd/blob/master/2.4/alpine/httpd-foreground
 set -e
-export APACHE_RUN_USER=apache
-export APACHE_RUN_GROUP=www-data
-export APACHE_PID_FILE=/web/run/apache2.pid
-export APACHE_RUN_DIR=/var/run/
-export APACHE_LOCK_DIR=/var/lock/
-export APACHE_LOG_DIR=/web/log/
 
-export LANG=C
-export LANG
+mkdir -p /run/apache2
 
-# consult Docker environment variables
-source /etc/envvars
+# Apache gets grumpy about PID files pre-existing
+rm -f /run/apache2/httpd.pid
 
-exec /usr/sbin/httpd -DNO_DETACH -f /web/config/httpd.conf
+exec httpd -DFOREGROUND
