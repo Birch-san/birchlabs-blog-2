@@ -14,7 +14,9 @@ RUN mv /from_host/xdebug.ini /etc/php7/conf.d/xdebug.ini \
 && mkdir -p /run/apache2 \
 && sed -i 's/^#ServerName.*/ServerName localhost/' /etc/apache2/httpd.conf \
 && sed -i 's/^#\(LoadModule rewrite_module.*\)/\1/g' /etc/apache2/httpd.conf \
-&& sed -i 's/AllowOverride [Nn]one/AllowOverride All/g' /etc/apache2/httpd.conf
+&& sed -i 's/^#\(LoadModule http2_module.*\)/\1/g' /etc/apache2/httpd.conf \
+&& sed -i 's/AllowOverride [Nn]one/AllowOverride All/g' /etc/apache2/httpd.conf \
+&& echo 'Protocols h2 http/1.1' >> /etc/apache2/httpd.conf
 
 EXPOSE 80
 

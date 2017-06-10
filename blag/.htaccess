@@ -1,6 +1,6 @@
-# <Location /index.htmll>
-#   Header add Link "</assets/styles.css>;rel=preload"
-# </Location>
+<Files "index.php">
+	Header add Link "<assets/styles.css>;rel=preload"
+</Files>
 
 RewriteEngine on
 
