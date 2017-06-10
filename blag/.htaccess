@@ -1,6 +1,9 @@
+#H2EarlyHints on
+
 # https://w3c.github.io/preload/
 <Files "index.php">
-	Header add Link "<style.css>;rel=preload;as=style"
+	Header add Link "</style.css>;rel=preload;as=style"
+	#H2PushResource /style.css critical
 </Files>
 
 RewriteEngine on
