@@ -1,5 +1,6 @@
+# https://w3c.github.io/preload/
 <Files "index.php">
-	Header add Link "<style.css>;rel=preload"
+	Header add Link "<style.css>;rel=preload;as=style"
 </Files>
 
 RewriteEngine on
