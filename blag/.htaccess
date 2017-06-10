@@ -1,5 +1,5 @@
 <Files "index.php">
-	Header add Link "<assets/styles.css>;rel=preload"
+	Header add Link "<style.css>;rel=preload"
 </Files>
 
 RewriteEngine on
