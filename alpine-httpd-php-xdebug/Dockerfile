@@ -18,11 +18,9 @@ COPY from_host /from_host
 
 # Create symlinks PHP -> PHP7
 RUN mv /from_host/xdebug.ini /etc/php7/conf.d/xdebug.ini \
-&& mv /from_host/httpd.conf /from_host/sites-available /etc/apache2/ \
+&& mv /from_host/httpd.conf /etc/apache2/ \
 # Apache wants to put its pidfile into /run/apache2/httpd.pid, so dir needs to exist
 && mkdir -p /run/apache2 \
-&& mkdir -p /etc/apache2/sites-enabled \
-&& ln -sf /etc/apache2/sites-available/*.conf /etc/apache2/sites-enabled/ \
 && ln -sf /usr/bin/php7 /usr/bin/php \
 && ln -sf /dev/stdout /var/www/logs/access.log \
 && ln -sf /dev/stdout /var/www/logs/ssl_access.log \
