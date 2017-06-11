@@ -26,6 +26,7 @@ RUN mv /from_host/xdebug.ini /etc/php7/conf.d/xdebug.ini \
 && ln -sf /dev/stdout /var/www/logs/ssl_access.log \
 && ln -sf /dev/stderr /var/www/logs/error.log \
 && ln -sf /dev/stderr /var/www/logs/ssl_error.log \
-&& sed -i 's/^\(\(DocumentRoot\|ServerAdmin\|ServerName\) .*\)$/#\1/g' /etc/apache2/conf.d/ssl.conf
+# comment out VirtualHost section of /etc/apache2/conf.d/ssl.conf so that it doesn't clash with the one in our httpd.conf
+&& echo "$(awk '/^<VirtualHost/{f=2} /^<\/VirtualHost/{f=1} f{$0 = "# " $0} f==1{f--} {print}' /etc/apache2/conf.d/ssl.conf)" > /etc/apache2/conf.d/ssl.conf
 
 CMD ["/from_host/apache-run.sh"]
