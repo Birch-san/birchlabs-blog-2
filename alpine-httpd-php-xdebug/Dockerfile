@@ -28,8 +28,6 @@ RUN mv /from_host/xdebug.ini /etc/php7/conf.d/xdebug.ini \
 && ln -sf /dev/stdout /var/www/logs/ssl_access.log \
 && ln -sf /dev/stderr /var/www/logs/error.log \
 && ln -sf /dev/stderr /var/www/logs/ssl_error.log \
-&& sed -i 's/^\(\(DocumentRoot\|ServerAdmin\|ServerName\) .*\)$/#\1/g' /etc/apache2/conf.d/ssl.conf \
-&& sed -i 's#^\(SSLCertificateFile \).*$#\1/etc/apache2/ssl/localhost.cert#g' /etc/apache2/conf.d/ssl.conf \
-&& sed -i 's#^\(SSLCertificateKeyFile \).*$#\1/etc/apache2/ssl/private/localhost.key#g' /etc/apache2/conf.d/ssl.conf
+&& sed -i 's/^\(\(DocumentRoot\|ServerAdmin\|ServerName\) .*\)$/#\1/g' /etc/apache2/conf.d/ssl.conf
 
 CMD ["/from_host/apache-run.sh"]

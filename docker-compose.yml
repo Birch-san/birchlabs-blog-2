@@ -7,7 +7,7 @@ services:
     - "8083:443"
     volumes:
     - ./blag:/var/www/localhost/htdocs:ro
-    - ./ssl/cert.pem:/etc/apache2/ssl/localhost.cert:ro
-    - ./ssl/key.pem:/etc/apache2/ssl/private/localhost.key:ro
+    - ./ssl/cert.pem:/etc/ssl/apache2/server.pem:ro
+    - ./ssl/key.pem:/etc/ssl/apache2/server.key:ro
     environment:
       XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost remote_port=9000 remote_handler=dbgp mode=req remote_autostart=1"
