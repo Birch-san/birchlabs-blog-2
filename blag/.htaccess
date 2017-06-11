@@ -1,70 +1,76 @@
 #H2EarlyHints on
 
 # https://w3c.github.io/preload/
-<Files "index.php">
-	Header add Link "</style.css>;rel=preload;as=style"
-	#H2PushResource /style.css critical
-</Files>
+<IfModule http2_module>
+	<IfModule headers_module>
+		<Files "index.php">
+			Header add Link "</style.css>;rel=preload;as=style"
+			#H2PushResource /style.css critical
+		</Files>
+	</IfModule>
+</IfModule>
 
-RewriteEngine on
+<IfModule rewrite_module>
+	RewriteEngine on
 
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteRule .* /legacy/habbo.php [R=302,L]
+	# RewriteCond %{REQUEST_FILENAME} !-f
+	# RewriteRule .* /legacy/habbo.php [R=302,L]
 
-# Use this in production to rewrite / to /legacy
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} ^((/[^/]+)*/twinz)
-RewriteCond %1/legacy%{REQUEST_URI} -f [OR]
-RewriteCond %1/legacy%{REQUEST_URI} -d
-RewriteRule .* /legacy%{REQUEST_URI} [R=302,L]
+	# Use this in production to rewrite / to /legacy
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} ^((/[^/]+)*/twinz)
+	RewriteCond %1/legacy%{REQUEST_URI} -f [OR]
+	RewriteCond %1/legacy%{REQUEST_URI} -d
+	RewriteRule .* /legacy%{REQUEST_URI} [R=302,L]
 
-# Use this to rewrite / to /legacy on a _sanely_ configured server
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{DOCUMENT_ROOT}/legacy%{REQUEST_URI} -f [OR]
-RewriteCond %{DOCUMENT_ROOT}/legacy%{REQUEST_URI} -d
-RewriteRule .* /legacy%{REQUEST_URI} [R=302,L]
+	# Use this to rewrite / to /legacy on a _sanely_ configured server
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{DOCUMENT_ROOT}/legacy%{REQUEST_URI} -f [OR]
+	RewriteCond %{DOCUMENT_ROOT}/legacy%{REQUEST_URI} -d
+	RewriteRule .* /legacy%{REQUEST_URI} [R=302,L]
 
-# See my StackOverflow question:
-# https://stackoverflow.com/q/44353754/5257399
+	# See my StackOverflow question:
+	# https://stackoverflow.com/q/44353754/5257399
 
-# Useful way to test redirects:
-# curl -sI 'http://localhost:8082/habbo.php?h=1' | grep Location | sed 's/^Location: //'
+	# Useful way to test redirects:
+	# curl -sI 'http://localhost:8082/habbo.php?h=1' | grep Location | sed 's/^Location: //'
 
-# Ideas that I tried along the way (retained for educational reasons):
+	# Ideas that I tried along the way (retained for educational reasons):
 
-# RewriteCond %{SCRIPT_FILENAME} !-f
-# RewriteCond %{SCRIPT_FILENAME} !-d
-# Capture into %2: the relative complement of REQUEST_URI in SCRIPT_FILENAME
-# this essentially gives us %{DOCUMENT_ROOT}, but in a way resilient to upstream changes that break %{DOCUMENT_ROOT}
-# however it looks like we cannot rely upon %{SCRIPT_FILENAME} to contain the full absolute path to the file (ends abruptly at the first directory if a nested file is requested).
-# RewriteCond %{REQUEST_URI}::%{SCRIPT_FILENAME} ^(.*?)::(.*)\1$
-# RewriteCond %2/legacy/%{REQUEST_URI} -f [OR]
-# RewriteCond %2/legacy/%{REQUEST_URI} -d
-# RewriteRule .* /legacy/%{REQUEST_URI} [L,R=301]
-# #RewriteRule .* /_%{SCRIPT_FILENAME}_%{REQUEST_URI} [L,R=301]# 
+	# RewriteCond %{SCRIPT_FILENAME} !-f
+	# RewriteCond %{SCRIPT_FILENAME} !-d
+	# Capture into %2: the relative complement of REQUEST_URI in SCRIPT_FILENAME
+	# this essentially gives us %{DOCUMENT_ROOT}, but in a way resilient to upstream changes that break %{DOCUMENT_ROOT}
+	# however it looks like we cannot rely upon %{SCRIPT_FILENAME} to contain the full absolute path to the file (ends abruptly at the first directory if a nested file is requested).
+	# RewriteCond %{REQUEST_URI}::%{SCRIPT_FILENAME} ^(.*?)::(.*)\1$
+	# RewriteCond %2/legacy/%{REQUEST_URI} -f [OR]
+	# RewriteCond %2/legacy/%{REQUEST_URI} -d
+	# RewriteRule .* /legacy/%{REQUEST_URI} [L,R=301]
+	# #RewriteRule .* /_%{SCRIPT_FILENAME}_%{REQUEST_URI} [L,R=301]# 
 
-# RewriteCond %{SCRIPT_FILENAME} !-f
-# RewriteCond %{SCRIPT_FILENAME} !-d
-# Capture into %1: an absolute path to the dir holding the requested file
-# This is not useful if the user requested a nested file.
-# RewriteCond %{SCRIPT_FILENAME} ^(([^/]*/)*)([^/]*)$
-# RewriteCond %1/legacy/%3 -f [OR]
-# RewriteCond %{SCRIPT_FILENAME} ^(([^/]*/)*)([^/]*)$
-# RewriteCond %1/legacy/%3 -d
-# # RewriteRule ^(.*)$ /legacy%{REQUEST_URI} [L,R=301]
-# RewriteRule ^(([^/]*/)*)([^/]*)$ $1/legacy/$3 [L,R=301]
+	# RewriteCond %{SCRIPT_FILENAME} !-f
+	# RewriteCond %{SCRIPT_FILENAME} !-d
+	# Capture into %1: an absolute path to the dir holding the requested file
+	# This is not useful if the user requested a nested file.
+	# RewriteCond %{SCRIPT_FILENAME} ^(([^/]*/)*)([^/]*)$
+	# RewriteCond %1/legacy/%3 -f [OR]
+	# RewriteCond %{SCRIPT_FILENAME} ^(([^/]*/)*)([^/]*)$
+	# RewriteCond %1/legacy/%3 -d
+	# # RewriteRule ^(.*)$ /legacy%{REQUEST_URI} [L,R=301]
+	# RewriteRule ^(([^/]*/)*)([^/]*)$ $1/legacy/$3 [L,R=301]
 
-# Failed ideas to see if I could undo or honor any of the upstream rules on the shared web hosting:
+	# Failed ideas to see if I could undo or honor any of the upstream rules on the shared web hosting:
 
-# Specifically I tried to make %{DOCUMENT_ROOT} point to the physical filesystem location of the web root. 
-# it was showing `/var/www/html` -- which appeared to be either inaccessible or non-meaningful in a multi-tenant webserver.
-# `/var/www/html` is *not* the web root evident in %{SCRIPT_FILENAME}.
-# None of these options changed anything obvious.
-# Options -MultiViews +FollowSymLinks
-# RewriteOptions inherit MergeBase
-# RewriteBase /
+	# Specifically I tried to make %{DOCUMENT_ROOT} point to the physical filesystem location of the web root. 
+	# it was showing `/var/www/html` -- which appeared to be either inaccessible or non-meaningful in a multi-tenant webserver.
+	# `/var/www/html` is *not* the web root evident in %{SCRIPT_FILENAME}.
+	# None of these options changed anything obvious.
+	# Options -MultiViews +FollowSymLinks
+	# RewriteOptions inherit MergeBase
+	# RewriteBase /
 
-# Use this to print out variables (prints them into your redirect)
-#RewriteRule .* /__%{DOCUMENT_ROOT}__%{REQUEST_FILENAME}__%{REQUEST_URI} [R=302,L]
+	# Use this to print out variables (prints them into your redirect)
+	#RewriteRule .* /__%{DOCUMENT_ROOT}__%{REQUEST_FILENAME}__%{REQUEST_URI} [R=302,L]
+</IfModule>
