@@ -4,7 +4,10 @@ services:
     build: ./alpine-httpd-php-xdebug
     ports:
     - "8082:80"
+    - "8083:443"
     volumes:
-    - ./blag:/var/www/localhost/htdocs
+    - ./blag:/var/www/localhost/htdocs:ro
+    - ./certs/cert.pem:/etc/apache2/ssl/localhost.cert:ro
+    - ./certs/key.pem:/etc/apache2/ssl/private/localhost.key:ro
     environment:
       XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost remote_port=9000 remote_handler=dbgp mode=req remote_autostart=1"

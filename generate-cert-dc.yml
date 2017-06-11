@@ -6,6 +6,6 @@ services:
     ports:
     - "8082:80"
     volumes:
-    - ./certs:/certs
+    - ./ssl:/certs
     environment:
       SSL_SUBJECT: "localhost"
