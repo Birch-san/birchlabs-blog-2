@@ -4,7 +4,7 @@
 <IfModule http2_module>
 	<IfModule headers_module>
 		<Files "index.php">
-			#Header add Link '</style.css>;rel="preload push";as="style"'
+			#Header add Link "</style.css>;rel=preload;as=style"
 			H2PushResource /style.css critical
 		</Files>
 	</IfModule>
