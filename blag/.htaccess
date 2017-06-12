@@ -1,14 +1,14 @@
 #H2EarlyHints on
 
 # https://w3c.github.io/preload/
-<IfModule http2_module>
-	<IfModule headers_module>
-		<Files "index.php">
+# <IfModule http2_module>
+	# <IfModule headers_module>
+		<Files "index.html">
 			#Header add Link "</style.css>;rel=preload;as=style"
 			H2PushResource /style.css critical
 		</Files>
-	</IfModule>
-</IfModule>
+	# </IfModule>
+# </IfModule>
 
 <IfModule rewrite_module>
 	RewriteEngine on
