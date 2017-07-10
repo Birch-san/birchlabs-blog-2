@@ -29,7 +29,9 @@ markdown: kramdown
 #theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-assets
+  - octopress-minify-html
+
+#env: production
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
@@ -43,38 +45,8 @@ plugins:
 #   - vendor/gems/
 #   - vendor/ruby/
 
-# https://github.com/jekyll/jekyll-assets
-assets:
-  compress:
-    css: 
-      development: true
-      production: true
-    js: 
-      development: false
-      production: true
-  autowrite: true
-  cache: .asset-cache
-  cache_type: filesystem
-  cdn: https://cdn.example.com
-  skip_baseurl_with_cdn: false
-  skip_prefix_with_cdn: false
-  prefix: "/assets"
-  digest: true
-  assets:
-    - "*.png"
-    - "bundle.css"
-  sources:
-    - _assets/css
-    - _assets/images
-    - _assets/javascripts
-    - _assets/stylesheets
-    - _assets/fonts
-    - _assets/img
-    - _assets/js
-  features:
-    liquid: false
-    integrity: false
-    # This will add height and width attributes for an img tag.
-    automatic_img_size: true
-    # This will add the digest path as an alt attribute for an img tag.
-    automatic_img_alt : true
+html_press:
+  unquoted_attributes: false
+  drop_empty_values: false
+  strip_crlf: false
+  js_minifier_options: false
