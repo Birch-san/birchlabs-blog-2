@@ -2,9 +2,9 @@
  * Site header
  */
 .site-header {
-  border-top: 5px solid $grey-color-dark;
-  border-bottom: 1px solid $grey-color-light;
-  min-height: $spacing-unit * 1.865;
+  // border-top: 5px solid $grey-color-dark;
+  // border-bottom: 1px solid $grey-color-light;
+  // min-height: $spacing-unit * 1.865;
 
   // Positioning context for the mobile navigation icon
   position: relative;
@@ -18,8 +18,8 @@
   margin-bottom: 0;
   float: left;
 
-  &,
-  &:visited {
+  &,& > a,
+  &:visited, & > a:visited {
     color: $grey-color-dark;
   }
 }
@@ -195,6 +195,7 @@
 .post-meta {
   font-size: $small-font-size;
   color: $grey-color;
+  float: right;
 }
 
 .post-link {
@@ -208,7 +209,13 @@
  * Posts
  */
 .post-header {
-  margin-bottom: $spacing-unit;
+  // margin-bottom: $spacing-unit;
+}
+
+.post-header:after {
+    content: '';
+    display: block;
+    clear: both;
 }
 
 .post-title {
@@ -219,6 +226,8 @@
   @include media-query($on-laptop) {
     @include relative-font-size(2.25);
   }
+
+  float: left;
 }
 
 .post-content {
