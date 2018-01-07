@@ -6,7 +6,10 @@ services:
     - "8082:80"
     - "8083:443"
     volumes:
-    - ./blag/_site:/var/www/localhost/htdocs:ro
+    # - ./blag/_site:/var/www/localhost/htdocs:ro
+    # - '/Users/birch/Documents/Birchlabs/Invasion/Invasion 5 Creative Cloud/bin-debug:/var/www/localhost/htdocs:ro'
+    # - '/Users/birch/Documents/spectre:/var/www/localhost/htdocs:ro'
+    - '/Users/birch/git/birchlabs-site/dist:/var/www/localhost/htdocs:ro'
     - ./ssl/cert.pem:/etc/ssl/apache2/server.pem:ro
     - ./ssl/key.pem:/etc/ssl/apache2/server.key:ro
     environment:
